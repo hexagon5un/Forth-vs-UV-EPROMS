@@ -27,9 +27,8 @@
 
 : read ( address -- data ) write-address drop-e drop-g 1 us read-data ;
 
-: burn ( data address -- data ) 
+: burn ( data address -- ) 
 	write-address
-	dup \ extra copy of data
 	set-data-output
 	write-data
 	pulse-e
@@ -42,10 +41,9 @@
 	raise-g
 ;
 
-: compare? drop drop ; \ todo
-: program ( data address -- data verified_data ) burn verify compare? ;
+: program ( data address -- verify_data ) burn verify ;
 
-: bits-zeroed?  bit 0 do i read $ffff <> if ." unmatch: " i . then loop ;
+: bits-zeroed?  bit 0 do i read $ffff <> if ." unmatch: " i ." " i read cr then loop ;
 : all-zeroed? 20 bits-zeroed? ; \ takes ~ 60 sec
 
 

@@ -10,10 +10,13 @@
 : set-address-high-output 4 0 do omode-pp 2 i io io-mode! loop ;
 : set-e-g-low omode-pp dup pc4 io! pc5 io! pc4 ios! pc5 ios! ;
 
+: eprom-init set-data-input set-address-low-output set-address-high-output set-e-g-low ; 
+
 : write-low-address ( address -- ) $FFFF and pe0 io-base GPIO.ODR + ! ;
 : write-high-address ( address -- ) 16 rshift $000F and pc0 io-base GPIO.ODR + ! ;
 : write-address dup write-low-address write-high-address ; 
 : write-data ( data -- ) $FFFF and pd0 io-base GPIO.ODR + ! ;
+: read-data ( -- data )  pd0 io-base GPIO.IDR + @ ;
 
 \ for write mode and verify mode
 : drop-e pc4 ioc! ; 
@@ -22,9 +25,8 @@
 : drop-g pc5 ioc! ; 
 : raise-g pc5 ios! ;
 
-: compare? drop drop ; \ todo
+: read ( address -- data ) write-address drop-e drop-g 1 us read-data ;
 
-: read ( address -- data ) write-address drop-e drop-g 1 us pd0 io-base GPIO.IDR + @ ;
 : burn ( data address -- data ) 
 	write-address
 	dup \ extra copy of data
@@ -40,11 +42,10 @@
 	raise-g
 ;
 
-: program ( data address -- data verified_data ) burn verify ;
+: compare? drop drop ; \ todo
+: program ( data address -- data verified_data ) burn verify compare? ;
 
-
-
-
-
+: bits-zeroed?  bit 0 do i read $ffff <> if ." unmatch: " i . then loop ;
+: all-zeroed? 20 bits-zeroed? ; \ takes ~ 60 sec
 
 

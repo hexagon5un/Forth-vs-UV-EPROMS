@@ -1,4 +1,3 @@
-
 \ Port D is data
 \ Port E + PC0-PC3 is address
 \ PC4 is ~E, PC5 is ~G
@@ -8,13 +7,11 @@
 : set-data-output 16 0 do omode-pp 3 i io io-mode! loop ;
 : set-address-low-output 16 0 do omode-pp 4 i io io-mode! 4 i io ioc! loop ; ( E = 4 )
 : set-address-high-output 4 0 do omode-pp 2 i io io-mode! loop ; ( C = 2 )
-: set-e-g-low omode-pp dup pc4 io-mode! pc5 io-mode! pc4 ios! pc5 ios! ;
-
-: eprom-init set-data-input set-address-low-output set-address-high-output set-e-g-low ; 
-
-: write-low-address ( address -- ) $FFFF and pe0 io-base GPIO.ODR + ! ;
+: set-e-g-output omode-pp dup pc4 io-mode! pc5 io-mode! pc4 ios! pc5 ios! ;
+: eprom-init set-data-input set-address-low-output set-address-high-output set-e-g-output ; 
 
 pc0 io-base GPIO.ODR + constant portC-output
+: write-low-address ( address -- ) $FFFF and pe0 io-base GPIO.ODR + ! ;
 : write-high-address ( address -- ) 16 rshift $000F and $FFF0 portc-output @ and or portc-output ! ;
 : write-address dup write-low-address write-high-address ; 
 : write-data ( data -- ) $FFFF and pd0 io-base GPIO.ODR + ! ;
@@ -46,12 +43,23 @@ pc0 io-base GPIO.ODR + constant portC-output
 	raise-g
 ;
 
-: program ( data address -- verify_data ) burn verify ;
+: program ( data address -- verify_data ) begin 2dup burn verify 2 pick = until 2drop ;
 
-: bits-zeroed?  bit 0 do i read $ffff <> if cr ." unmatch: " i hex. ." " i read hex. then loop cr ;
-: all-zeroed? 20 bits-zeroed? ; \ takes ~ 60 sec
+
+\ debugging helpers
+: bits-cleared?  bit 0 do i read $ffff <> if cr ." unmatch: " i hex. ." " i read hex. then loop cr ;
+: all-cleared? 20 bits-cleared? ; \ takes ~ 60 sec
+
+: bits-zero?  bit 0 do i read 0 <> if cr ." unmatch: " i hex. ." " i read hex. then loop cr ;
+: all-zero? 20 bits-zero? ; \ takes ~ 60 sec
 
 : all pd0 io. pe0 io. pc0 io. ;
+
+: printstack ( -- ) depth dup if   begin  dup pick .  1- dup 0= until  then drop ;
+: .s 	( -- ) [char] [ emit space printstack [char] ] emit ;
+: tab 9 emit ;
+: prompt-stack ( -- ) begin query interpret tab .s space ." ok." cr again ;
+: print.stack ['] prompt-stack hook-quit !  quit ; 
 
 eprom-init
 

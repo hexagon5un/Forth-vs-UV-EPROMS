@@ -43,7 +43,7 @@ pc0 io-base GPIO.ODR + constant portC-output
 	raise-g
 ;
 
-: program ( data address -- verify_data ) begin 2dup burn verify 2 pick = until 2drop ;
+: program ( data address --  ) begin 2dup burn verify 2 pick = until 2drop ;
 
 
 \ debugging helpers

@@ -45,7 +45,6 @@ pc0 io-base GPIO.ODR + constant portC-output
 
 : program ( data address --  ) begin 2dup burn verify 2 pick = until 2drop ;
 
-
 \ debugging helpers
 : bits-cleared?  bit 0 do i read $ffff <> if cr ." unmatch: " i hex. ." " i read hex. then loop cr ;
 : all-cleared? 20 bits-cleared? ; \ takes ~ 60 sec
@@ -63,3 +62,4 @@ pc0 io-base GPIO.ODR + constant portC-output
 
 eprom-init
 
+\ vim: set ft=forth:

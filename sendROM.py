@@ -20,9 +20,9 @@ with open("rm1x113.BIN", "rb") as f:
     address = 0  
     starttime = d.datetime.now()
     while address < 2**20:
-       ## Which endianness?
-        # data = ord(f.read(1)) + 256 * ord(f.read(1))
-        data = 256 * ord(f.read(1)) + ord(f.read(1))
+       ## Which endianness? The other one, naturally
+        data = ord(f.read(1)) + 256 * ord(f.read(1))
+        ## data = 256 * ord(f.read(1)) + ord(f.read(1))
         if writeData:
             s.write("%i %i program\n" % (data, address))
         else:

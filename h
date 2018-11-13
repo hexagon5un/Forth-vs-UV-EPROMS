@@ -45,6 +45,13 @@ pc0 io-base GPIO.ODR + constant portC-output
 
 : program ( data address --  ) begin 2dup burn verify 2 pick = until 2drop ;
 
+: ?carriage-return dup 7 and 0= if cr then 1-foldable ;
+: 4. 0 <# # # # # #> type ;
+
+: dump ( start #words -- bytestream ) 0 hex ?do ?carriage-return dup read 4. bl emit 1+ loop decimal cr ; 
+
+: dump-all 0 1 20 lshift dump ;
+
 \ debugging helpers
 : bits-cleared?  bit 0 do i read $ffff <> if cr ." unmatch: " i hex. ." " i read hex. then loop cr ;
 : all-cleared? 20 bits-cleared? ; \ takes ~ 60 sec

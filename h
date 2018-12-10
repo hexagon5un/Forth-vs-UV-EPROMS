@@ -59,6 +59,9 @@ pc0 io-base GPIO.ODR + constant portC-output
 : bits-zero?  bit 0 do i read 0 <> if cr ." unmatch: " i hex. ." " i read hex. then loop cr ;
 : all-zero? 20 bits-zero? ; \ takes ~ 60 sec
 
+: sum-bits-clear bit 0 swap 0 do i read $ffff = if 1+ then loop ." Cleared: " . cr ;
+: sum-bits-zero bit 0 swap 0 do i read 0 = if 1+ then loop ." Zero: " .  cr ;
+
 : all pd0 io. pe0 io. pc0 io. ;
 
 : printstack ( -- ) depth dup if   begin  dup pick .  1- dup 0= until  then drop ;
@@ -68,5 +71,8 @@ pc0 io-base GPIO.ODR + constant portC-output
 : print.stack ['] prompt-stack hook-quit !  quit ; 
 
 eprom-init
+cr
+10 sum-bits-clear
+10 sum-bits-zero
 
 \ vim: set ft=forth:

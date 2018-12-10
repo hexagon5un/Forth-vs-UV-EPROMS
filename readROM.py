@@ -1,9 +1,7 @@
 import serial
-import os
-filename = "rm1x_pattern_eeprom"
+import time
 
-s=serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=1)
-outfile = open(filename + ".txt", "w") 
+s=serial.Serial("/dev/ttyUSB0", baudrate=115200, timeout=0)
 
 def read_until_ok(s):
     """Dual-purpose: waits until ok. is returned, keeps the string"""
@@ -13,18 +11,31 @@ def read_until_ok(s):
     output = output.strip()
     return output
 
-## Double-sure chip is ready
-s.write("eprom-init\n")
-print (read_until_ok(s))
+print ("You should have run folie and included h already: folie -p /dev/ttyUSB0")
 
-## Start dump
-s.write("dump-all\n")
-a = s.readline() # skip command line itself
-while not a == '':
-    a = s.readline()
-    if not "ok." in a: # skip last line
-        outfile.write(a)
-outfile.close() 
+ts = int(time.mktime(time.localtime()))
+outfile = open("dump_%d.txt")
+## this is fucked.  easier to script in bash
 
-os.system("xxd -r -p " + filename + ".txt > " + filename + ".bin")
+
+# with open("rm1x113.BIN", "rb") as f:
+#     address = 0  
+#     starttime = d.datetime.now()
+#     while address < 2**20:
+#        ## Which endianness? The other one, naturally
+#         ## data = ord(f.read(1)) + 256 * ord(f.read(1))
+#         ## data = 256 * ord(f.read(1)) + ord(f.read(1))
+#         if writeData:
+#             s.write("%i %i program\n" % (data, address))
+#         else:
+#             s.write("%i read hex.\n" % (address))
+#         print (read_until_ok(s))
+#         address = address + 1
+
+#     endtime = d.datetime.now()
+#     elapsed = endtime - starttime
+#     print "elapsed time: %i.%i seconds" % (elapsed.seconds,
+#             elapsed.microseconds)
+
+
 

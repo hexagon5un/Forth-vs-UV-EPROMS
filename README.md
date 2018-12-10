@@ -8,6 +8,8 @@ If you've gotten here through some other path, you're probably lost.  Not that t
 
 Flash black board, with base.fs in ROM
 
+Include eprom.fs in RAM
+
 ## Progress / Notes to Self
 
 Basically working, in that can read/write/verify EPROMS
@@ -24,14 +26,14 @@ would be slow.  maybe I don't care.
 
 ## Dump ROMS
 
-call up folie
-include h if you need to 
-call up folie with the -c parameter to dump output to a file
-"folie -p /dev/ttyUSB0 -c dump_`now`.txt"
-head -n -1 dump_2018-12-02-233500.txt | tail -n +2 > foo
+1. call up folie
+2. include eprom.fs if you need to 
+3. call up folie with the -c parameter to dump output to a file
+4. "folie -p /dev/ttyUSB0 -c dump_`now`.txt"
+5. head -n -1 dump_2018-12-02-233500.txt | tail -n +2 > foo
 
-dump-all
-(wait 15 min)
-then edit the file to keep just the hex dump
-then use xxd to convert to bits if needed.
+6. dump-all
+7. (wait 15 min)
+8. then edit the file to keep just the hex dump
+9. then use xxd to convert to bits if needed.
 

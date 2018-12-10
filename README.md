@@ -1,4 +1,14 @@
+## Here Be Nothing But Dragons
+
+Hi.  This is some throwaway / quick-hack code to one-off burn an old synthesizer OS into a 27C160 UV EPROM.  I wrote about my experiences with these ancient beasties here: .  
+
+If you've gotten here through some other path, you're probably lost.  Not that there's anything wrong with that.  Just don't expect there to be quality code or documentation here.  :)
+
+## Set up Hackaday Forth on the black STM32F407 boards
+
 Flash black board, with base.fs in ROM
+
+## Progress / Notes to Self
 
 Basically working, in that can read/write/verify EPROMS
 Not optimized, may only work when run from RAM
@@ -13,6 +23,7 @@ would be slow.  maybe I don't care.
 
 
 ## Dump ROMS
+
 call up folie
 include h if you need to 
 call up folie with the -c parameter to dump output to a file

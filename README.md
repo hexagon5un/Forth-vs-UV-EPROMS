@@ -1,6 +1,6 @@
 ## Here Be Nothing But Dragons
 
-Hi.  This is some throwaway / quick-hack code to one-off burn an old synthesizer OS into a 27C160 UV EPROM.  I wrote about my experiences with these ancient beasties here: https://wp.me/pk3lN-1ptA
+Hi.  This is some throwaway / quick-hack code to one-off burn an old synthesizer OS into a 27C160 UV EPROM.  I wrote about my experiences with these ancient beasties here: https://hackaday.com/2019/01/02/fail-of-the-week-eproms-rats-nests-tanning-lamps-and-cardboard-on-fire/
 
 If you've gotten here through some other path, you're probably lost.  Not that there's anything wrong with that.  Just don't expect there to be quality code or documentation here.  :)
 
